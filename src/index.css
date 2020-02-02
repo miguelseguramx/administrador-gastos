@@ -99,8 +99,15 @@ h2 {
   align-items: center;
   margin:0;
 }
-.realized-expenses li p .expense {
-  background-color: #004085;
+.realized-expenses li p .flow {
   padding: 1rem;
   color:white;
+}
+
+.realized-expenses li p .income{
+  background-color: #004085;
+}
+
+.realized-expenses li p .expense{
+  background-color: #721c24;;
 }

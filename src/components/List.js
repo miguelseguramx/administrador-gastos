@@ -1,16 +1,16 @@
 import React from 'react'
-import Expense from './Expense'
+import Cashflow from './Cashflow'
 
-function List({expenses}) {
+function List({flows}) {
     return(
         <div className="realized-expenses">
             <h2>Listado</h2>
             {
-                expenses.map( expense =>(
-                    <Expense
-                        key={expense.id}
-                        expense={expense}
-                    ></Expense>
+                flows.map( flow =>(
+                    <Cashflow
+                        key={flow.id}
+                        flow={flow}
+                    ></Cashflow>
                 ))
             }
         </div>

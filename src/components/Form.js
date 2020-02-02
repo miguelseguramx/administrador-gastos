@@ -4,78 +4,79 @@ import shortid from 'shortid'
 
 function Form(props) {
     
-   const { setExpense, setCreateExpense} = props
+   const { setFlow, setCreateFlow, flowtype, setFlowtype } = props
 
-   const [ expenseName, setExpenseName ] = useState('')
-   const [ expenseAmount, setExpenseAmount ] =  useState(0)
+   const [ flowName, setFlowName ] = useState('')
+   const [ flowAmount, setFlowAmount ] =  useState(0)
    const [ error, setError ] = useState(false)
 
    // This is to avoid the value of NaN if you delete the cero
    // This is not part of the course
    useEffect(()=>{
-      if(isNaN(expenseAmount)){
-         setExpenseAmount(0)
+      if(isNaN(flowAmount)){
+         setFlowAmount(0)
       }
-   }, [expenseAmount])
+   }, [flowAmount])
 
-   const addExpense = e =>{
+   const addFlow = e =>{
       e.preventDefault()
       // Validate the input 
-      if (expenseAmount <= 0 || isNaN(expenseAmount)){
+      if (flowAmount <= 0 || isNaN(flowAmount)){
          setError(true)
          return
       }
-      // Create a expense object
-      const expense = {
-         name: expenseName,
-         amount: expenseAmount,
+      // Create a cash flow object
+      const flow = {
+         name: flowName,
+         amount: flowAmount,
+         type: flowtype,
          id: shortid.generate()
       }
 
-      // Save the expnse on the principal component
-      setExpense(expense)
-      setCreateExpense(true)
+      // Save the flow on the principal component
+      setFlow(flow)
+      setCreateFlow(true)
 
       // Delete alert
       setError(false)
 
       // Reset the form
-      setExpenseName('')
-      setExpenseAmount('')
-
+      setFlowName('')
+      setFlowAmount('')
+      setFlowtype('none')
    }
 
    return(
       <form
-         onSubmit={addExpense}
+         onSubmit={addFlow}
       >
-         <h2>Agrega tus gastos</h2>
+         <h2>{flowtype === 'expense' ? 'Agregar gasto' : 'Agregar ingreso'}</h2>
          
          { error ? <Error message="Ambos campos son obligatorios o presupuesto incorrecto" /> : null}
 
          <div className="camp">
-               <label htmlFor="expense-name">¿En que gastaste?</label>
+               <label htmlFor="expense-name">{flowtype === 'expense' ? '¿En que gastaste?' : '¿Que recibiste?'}</label>
                <input 
                   id="expense-name"
                   type="text"
                   className="u-full-width"
                   placeholder="Ej. Transporte"
-                  onChange={ e => setExpenseName(e.target.value)}
-                  value={expenseName}
+                  onChange={ e => setFlowName(e.target.value)}
+                  value={flowName}
                ></input>
          </div>
          <div className="camp">
-               <label htmlFor="expense-cost">¿Cuanto Gastaste?</label>
+               <label htmlFor="expense-cost">{flowtype === 'expense' ? '¿Cuanto gastaste?' : '¿Cuanto recibiste?'}</label>
                <input 
                   id="expense-cost"
                   type="text"
                   className="u-full-width"
                   placeholder="Ej. Transporte"
-                  onChange={ e => setExpenseAmount(parseInt(e.target.value, 10))}
-                  value={expenseAmount}
+                  onChange={ e => setFlowAmount(parseInt(e.target.value, 10))}
+                  value={flowAmount}
                ></input>
          </div>
-         <input type="submit" className="button-primary u-full-width" value="Agregar gasto"/>
+         <input type="submit" className="button-primary u-full-width" value={flowtype === 'expense' ? 'Agregar gasto' : 'Agregar ingreso'}/>
       </form>
    )
 }
